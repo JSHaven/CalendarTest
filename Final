@@ -1,0 +1,225 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package calendartest3;
+
+import java.util.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.table.*;
+/**
+ *
+ * @author Justin Brewer
+ * 6/29/2018
+ * 
+ * This is a simple calendar test using Java code.
+ * This does not allow people to write in things on each day, nor does it save 
+ * anything. It is a simple test to test out the calendar function.
+ * 
+ */
+
+//Calendar Test Algorithm
+public class CalendarTest3 extends JFrame {
+    
+    //Calendar Frame Setup
+    DefaultTableModel TABLE1;
+    Calendar CAL = new GregorianCalendar();
+    
+    //Label deals with the calendar frame
+    JLabel LABEL = new JLabel(); 
+    
+    //Deals with the picture of the month & buttons
+    JLabel LABEL2 = new JLabel();
+    JPanel PANEL_BUTTONS = new JPanel();
+    
+    //Picture of the Month
+    ImageIcon ICON1 = new ImageIcon("src/CalendarTest3/June.jpg");
+    
+    
+    public CalendarTest3(){
+       
+        //Frame setup
+        this.setTitle("Calendar");
+        this.setSize(600, 650);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(new BorderLayout());
+        
+        
+        //Month title setup
+        LABEL.setHorizontalAlignment(SwingConstants.CENTER);
+        LABEL.setFont(new Font("Courier", Font.BOLD, 14));
+        
+        //Buttons to move back and forth through the months / years
+        //b1 is to go back
+        JButton b1 = new JButton("<-");
+        b1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+            CAL.add(Calendar.MONTH, -1);
+            PANEL_BUTTONS.remove(LABEL2);
+            updateMonth();
+            }
+        });
+ 
+        //b2 is to go forward
+        JButton b2 = new JButton("->");
+        b2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+            CAL.add(Calendar.MONTH, +1);
+            PANEL_BUTTONS.remove(LABEL2);
+            updateMonth();
+            }
+        });
+        
+        //Displaying the button on the calendar 
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(b1, BorderLayout.WEST);
+        panel.add(LABEL, BorderLayout.CENTER);
+        panel.add(b2, BorderLayout.EAST);
+        
+        
+        //Sets up the calendar table
+        String [] columns = {"Sun", "Mon", "Tues", "Wed",
+            "Thurs", "Fri", "Sat"};
+        TABLE1 = new DefaultTableModel(null,columns);  
+        JTable table2 = new JTable(TABLE1);
+        table2.setRowHeight(65); //size of blocks
+        table2.setEnabled(false); //makes it so people can't change numbers
+        JScrollPane pane = new JScrollPane(table2);   
+
+        this.add(panel, BorderLayout.NORTH);
+        this.add(pane, BorderLayout.SOUTH);
+       
+        //Data
+        this.updateMonth();
+        
+        this.setVisible(true);
+    }
+        //An Algorithm to find date using the GregorianCalendar method
+        void updateMonth() {
+            
+            CAL.set(Calendar.DAY_OF_MONTH, 1);
+            String month = CAL.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US);
+            int year = CAL.get(Calendar.YEAR);
+            LABEL.setText(month + " " + year);
+            int startDay = CAL.get(Calendar.DAY_OF_WEEK);
+            int numberOfDays = CAL.getActualMaximum(Calendar.DAY_OF_MONTH);
+            
+            //Table row size
+            TABLE1.setRowCount(0);
+            TABLE1.setRowCount(6);
+            
+            //Envokes Algorithm to get picture
+            monthArt();
+            
+            //Set up the days of the month in the table
+            int i = startDay-1;
+            for(int day=1;day<=numberOfDays;day++){
+                TABLE1.setValueAt(day, i/7 , i%7 );    
+                i = i + 1;
+            }    
+        };
+          
+        //Algorithm to display a picture for the correct month
+        void monthArt(){
+                  
+            CAL.set(Calendar.DAY_OF_MONTH, 1);
+            String month = CAL.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US);
+            
+           if (month == "January")
+            {                
+                ICON1 = new ImageIcon("src/CalendarTest3/January.jpg"); 
+                LABEL2 = new JLabel(ICON1);
+                PANEL_BUTTONS.add(LABEL2, BorderLayout.CENTER);
+                this.add(PANEL_BUTTONS, BorderLayout.CENTER);  
+            };
+            if (month == "February")
+            {                
+                ICON1 = new ImageIcon("src/CalendarTest3/February.jpg"); 
+                LABEL2 = new JLabel(ICON1);
+                PANEL_BUTTONS.add(LABEL2, BorderLayout.CENTER);
+                this.add(PANEL_BUTTONS, BorderLayout.CENTER);  
+            };
+            if (month == "March")
+            {                
+                ICON1 = new ImageIcon("src/CalendarTest3/March.jpg"); 
+                LABEL2 = new JLabel(ICON1);
+                PANEL_BUTTONS.add(LABEL2, BorderLayout.CENTER);
+                this.add(PANEL_BUTTONS, BorderLayout.CENTER);  
+            };
+            if (month == "April")
+            {
+                ICON1 = new ImageIcon("src/CalendarTest3/April.jpg");
+                LABEL2 = new JLabel(ICON1);
+                PANEL_BUTTONS.add(LABEL2, BorderLayout.CENTER);
+                this.add(PANEL_BUTTONS, BorderLayout.CENTER); 
+            };
+            if (month == "May")
+            {
+                ICON1 = new ImageIcon("src/CalendarTest3/May.jpg"); 
+                LABEL2 = new JLabel(ICON1);
+                PANEL_BUTTONS.add(LABEL2, BorderLayout.CENTER);
+                this.add(PANEL_BUTTONS, BorderLayout.CENTER); 
+            };
+            if (month == "June")
+            {
+                ICON1 = new ImageIcon("src/CalendarTest3/June.jpg"); 
+                LABEL2 = new JLabel(ICON1);
+                PANEL_BUTTONS.add(LABEL2, BorderLayout.CENTER);
+                this.add(PANEL_BUTTONS, BorderLayout.CENTER);  
+            };
+            if (month == "July")
+            {
+                ICON1 = new ImageIcon("src/CalendarTest3/July.jpg"); 
+                LABEL2 = new JLabel(ICON1);
+                PANEL_BUTTONS.add(LABEL2, BorderLayout.CENTER);
+                this.add(PANEL_BUTTONS, BorderLayout.CENTER);
+            };
+            if (month == "August")
+            {
+                ICON1 = new ImageIcon("src/CalendarTest3/August.jpg"); 
+                LABEL2 = new JLabel(ICON1);
+                PANEL_BUTTONS.add(LABEL2, BorderLayout.CENTER);
+                this.add(PANEL_BUTTONS, BorderLayout.CENTER);
+            };
+            if (month == "September")
+            {                
+                ICON1 = new ImageIcon("src/CalendarTest3/September.jpg"); 
+                LABEL2 = new JLabel(ICON1);
+                PANEL_BUTTONS.add(LABEL2, BorderLayout.CENTER);
+                this.add(PANEL_BUTTONS, BorderLayout.CENTER);
+            };
+            if (month == "October")
+            {                
+                ICON1 = new ImageIcon("src/CalendarTest3/October.jpg"); 
+                LABEL2 = new JLabel(ICON1);
+                PANEL_BUTTONS.add(LABEL2, BorderLayout.CENTER);
+                this.add(PANEL_BUTTONS, BorderLayout.CENTER);  
+            };
+            if (month == "November")
+            {                
+                ICON1 = new ImageIcon("src/CalendarTest3/November.jpg"); 
+                LABEL2 = new JLabel(ICON1);
+                PANEL_BUTTONS.add(LABEL2, BorderLayout.CENTER);
+                this.add(PANEL_BUTTONS, BorderLayout.CENTER);
+            };
+            if (month == "December")
+            {                
+                ICON1 = new ImageIcon("src/CalendarTest3/December.jpg"); 
+                LABEL2 = new JLabel(ICON1);
+                PANEL_BUTTONS.add(LABEL2, BorderLayout.CENTER);
+                this.add(PANEL_BUTTONS, BorderLayout.CENTER); 
+            };           
+        }; 
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        JFrame.setDefaultLookAndFeelDecorated(true);
+        CalendarTest3 frame = new CalendarTest3();       
+    }  
+}
